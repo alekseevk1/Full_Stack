@@ -1,0 +1,99 @@
+{% load static %}
+{% load products_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static 'products/css/style.css' %}", type="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{% static 'products/images/main.ico' %}" type="image/x-icon"/>
+</head>
+<body>
+    <header>
+        <div class="main_head"></div>
+        <div class="head">
+            <div class="top_menu">
+                <div class="block_catalog_and_icon">
+                    <div class="block_icon">
+                        <a class="a_icon" href="/">
+                            <div class="icon_top_menu"></div>
+                        </a>
+                    </div>
+                    <div class="block_catalog">
+                        <button class="button_catalog" onclick="dropDownMenu()">Каталог</button>
+                        <div id="myDropdown" class="dropdown-content">
+                            {% get_categories as categories%}
+                            {% for c in categories%}
+                                <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                            {% endfor %}
+                        </div>
+                        <span class="logo_catalog" role="img">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" class="icon__element">
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <div class="block_searchline">
+                    <div class="searchline">
+                        <form class="form_searchline">
+                            <input type="search" class="input_search_products" value="" autocomplete="off" name="search" placeholder="Найти товар" maxlength="50">
+                            <button class="button_search" type="submit">
+                                <span class="text_on_button_search"><b>Найти</b></span>
+                            </button>
+                            <button class="button_search_products" type="submit">
+                                <span class="text_on_button_search_products">Найти</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="block_signin_and_cart">
+                    <div class="block_signin">
+                        <a class="signin" rel="nofollow" href="/signin">
+                            <div class="text_signin"><b>Войти</b></div>
+                        </a>
+                        <button title="Вход" class="button_signin" id="button_signin"></button>
+                    </div>
+                    <a class="cart" href="/cart">
+                        <div class="text_cart"><b>Корзина</b></div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="kiosk"></div>
+        <div class="content-part">
+            {% block content %}
+            {% endblock %}
+                </div>
+    </main>
+    <footer>
+        <table class="table-page" border=0 cellpadding="0" cellspacing="0">
+            <tr><td valign=down>
+            {% block mainmenu %}
+                    <div class="headers">
+                        <ul id="mainmenu" class="mainmenu">
+                        <li class="logo"><a href="{% url 'home' %}"><div class="logo"></div></a></li>
+            {% for m in menu %}
+                {% if not forloop.last %}
+                        <li><a href="{% url m.url_name %}">{{m.title}}</a></li>
+                {% else %}
+                        <li class="last"><a href="{% url m.url_name %}">{{m.title}}</a></li>
+                {% endif %}
+            {% endfor %}
+                        </ul>
+                        <div class="clear"></div>
+                    </div>
+            {% endblock mainmenu %}
+    </footer>
+<script src="{% static 'products/js/main.js' %}"></script>
+</body>
+</html>

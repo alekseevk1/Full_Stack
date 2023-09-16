@@ -1,0 +1,92 @@
+{% extends "products/base.html" %}
+{% load mathfilters %}
+
+{% block content %}
+  {% if action_active %}
+    <div class="block_actions">
+      <h1 class="text_actions">Акции!!</h1>
+      <div class="discount"></div>
+    </div>
+  {% endif %}
+  <ul class="list-products" id="content">
+    <!--{% for post in posts %}
+  {% include "blog/parts/post_card.html" %}
+  {% if forloop.last %}
+    {% if page_obj.has_next %}
+      {% if not page_obj.number|divisibleby:"3" %}
+        <div hx-get="{{ url }}?page={{ page_obj.number|add:1 }}" hx-trigger="revealed" hx-swap="afterend" hx-target="this" rel="next"></div>
+      {% endif %}
+      {% if page_obj.number|divisibleby:"3" %}
+        <div class="load-more">
+          <button class="load-more__btn" id="see-more-btn" hx-get="{{ url }}?page={{ page_obj.number|add:1 }}" hx-trigger="click" hx-swap="outerHTML" hx-target="this" rel="next">Load More Posts</button>
+        </div>
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endfor %}-->
+  {% for p in products %}
+    <li class="one_product_action single-content">
+      <span class="swiper-slide-actions" style="width: 306px;">
+        <div class="block_product_action_wrap">
+          <div class="block_product_action">
+            <div class="block_photo">
+              <a draggable="false" href="{{ p.get_absolute_url }}">
+                <picture class="product-card__picture_main-recommendation">
+                  <img src="{{p.photo.url}}" class="product_photo" alt="{{p.title}}" title="{{p.title}}" draggable="false">
+                </picture>
+              </a>
+            </div>
+            <div class="productinfo_and_addtocart">
+              <div class="info_about_product">
+                <div class="text_about_product">
+                  <a class="name_product" draggable="false" href="{{ p.get_absolute_url }}">{{p.title}}</a>
+                </div>
+                <div class="product-card__bottom_main-recommendation">
+                  <div class="block_price_and_amount">
+                    <div class="product_price">
+                        {% if p.action %}
+                            <div class="old_price">{{p.price}} ₽</div>
+                            <div class="block_new_price">
+                                <div class="new_price">{{p.price|mul:3|intdiv:4}} ₽</div>
+                                 <div class="text_by_one">за   шт.</div>
+                            </div>
+                        {% else %}
+                        <div class="block_new_price else_price">
+                            <div class="new_price">{{p.price}} ₽</div>
+                             <div class="text_by_one">за   шт.</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="block_product_amount">
+                      <div class="product_amount">Товаров в наличии - </div><div class="amount">{{p.amount}}</div><div class="text_amount">шт.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="block_addtocart">
+                <div class="two_buttons_to_cart">
+                  <button class="button_plus_to_cart" id="plus"><b>+</b></button>
+                  <button class="button_minus_to_cart" id="minus"><b>-</b></button>
+                </div>
+                <div class="amount_in_cart"  id="counter">0</div>
+                <div class="cart_img">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </span>
+    </li>
+  {% endfor %}
+  </ul>
+  <div class="spinner-border text-primary mt-2 not-visible" role="status" id="spinner">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="load-more__btn mt-3" id="btn">
+    <button type="button" class="btn btn-success">Load More Post</button>
+  </div>
+  <div class="alert alert-danger not-visible" role="alert" id='alert'>
+    No more post to load!!
+  </div>
+  {{total_obj|json_script:"json-total"}}
+{% endblock content %}
